@@ -37,8 +37,6 @@ const Signup = () => {
         },
         withCredentials: true,
       });
-      console.log(res.data);
-      
       if (res.data.success) {
         toast.success(res.data.message);
         console.log("Navigating to login page...");
@@ -54,28 +52,6 @@ const Signup = () => {
 
   return (
     <div>
-        <nav className="w-full bg-gray-700 text-white p-6 flex justify-around items-center">
-        <div className="flex items-center space-x-2 cursor-pointer">
-          {/* Logo */}
-          <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
-            <span className="text-gray-900 font-bold">DC</span>
-          </div>
-          <h1 className="text-3xl font-bold">DevConnect</h1>
-        </div>
-
-        {/* Navigation Links */}
-        <div className="hidden md:flex text-lg space-x-8">
-          <a href="developers" className="hover:text-gray-400">
-            Developers
-          </a>
-          <a href="/" className="hover:text-gray-400">
-            Projects
-          </a>
-          <a href="/about" className="hover:text-gray-400">
-            About
-          </a>
-        </div>
-      </nav>
     <div className="h-[90vh] items-center flex justify-center px-5 lg:px-0">
       <div className="max-w-screen-xl bg-white border shadow sm:rounded-lg flex justify-center flex-1">
         <div className="flex-1 bg-blue-900 text-center hidden md:flex">

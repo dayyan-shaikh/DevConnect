@@ -13,7 +13,9 @@ router.post("/register", async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res
+        .status(400)
+        .json({ message: "User already exists", success: false });
     }
 
     // Hash the password
@@ -28,8 +30,9 @@ router.post("/register", async (req, res) => {
 
     await newUser.save();
     console.log(newUser);
-    res.status(201).json({ message: "User registered successfully" });
-    
+    res
+      .status(201)
+      .json({ message: "User registered successfully", success: true });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
@@ -57,9 +60,32 @@ router.post("/login", async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.json({ token, message: "Login successful" });
+    res.json({ token, message: "Login successful", success : true });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Delete a user by ID
+router.delete("/user/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Find the user by ID and remove
+    const user = await User.findByIdAndDelete(userId);
+    console.log("Deleted user:", user);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+
+    res
+      .status(200)
+      .json({ message: "User deleted successfully", success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Server error", success: false });
   }
 });
 

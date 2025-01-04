@@ -4,38 +4,6 @@ import { Link } from "react-router-dom";
 const Projects = () => {
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header Section */}
-      <nav className="bg-gray-700 text-white p-6 flex justify-around items-center">
-        <div className="flex items-center space-x-2 cursor-pointer">
-          {/* Logo */}
-          <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
-            <span className="text-gray-900 font-bold">DC</span>
-          </div>
-          <h1 className="text-3xl font-bold">DevConnect</h1>
-        </div>
-
-        {/* Navigation Links */}
-        <div className="hidden md:flex text-lg space-x-8">
-          <a href="developers" className="hover:text-gray-400">
-            Developers
-          </a>
-          <a href="/" className="hover:text-gray-400">
-            Projects
-          </a>
-          <a href="/about" className="hover:text-gray-400">
-            About
-          </a>
-        </div>
-
-        {/* Login/SignUp */}
-        <Link to={"/login"}>
-        <button className="bg-gray-900 px-4 py-2 rounded hover:bg-gray-900">
-          Login/Sign Up
-        </button>
-        </Link>
-        
-      </nav>
-
       {/* Search Section */}
       <div className="bg-gray-200 py-16 flex flex-col items-center">
         <h2 className="text-4xl text-gray-900">

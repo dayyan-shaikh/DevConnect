@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
+const profileRoutes = require("./routes/profile")
+const projectRoutes = require("./routes/project")
 
 dotenv.config();
 connectDB(); // Connect to MongoDB Atlas
@@ -22,6 +24,8 @@ app.use(express.json()); // Parse JSON requests
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/profile", profileRoutes);
+app.use("/project", projectRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { Link,useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -10,6 +10,8 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,39 +40,25 @@ const Login = () => {
       if (res.data.success) {
         setIsAuthenticated(true);
         toast.success(res.data.message);
+        localStorage.setItem("devuser", JSON.stringify(res.data.user));
+        localStorage.setItem("token", res.data.token); // Store the token
+        navigate("/");
       }
-      // localStorage.setItem("user", input);
+      localStorage.setItem("devuser", JSON.stringify(res.data.user));
     } catch (error) {
-      // localStorage.removeItem("user");
+      localStorage.removeItem("devuser");
       console.log(error);
       toast.error(error.response.data.message);
     }
   };
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div>
-        <nav className="w-full bg-gray-700 text-white p-6 flex justify-around items-center">
-        <div className="flex items-center space-x-2 cursor-pointer">
-          {/* Logo */}
-          <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
-            <span className="text-gray-900 font-bold">DC</span>
-          </div>
-          <h1 className="text-3xl font-bold">DevConnect</h1>
-        </div>
-
-        {/* Navigation Links */}
-        <div className="hidden md:flex text-lg space-x-8">
-          <a href="developers" className="hover:text-gray-400">
-            Developers
-          </a>
-          <a href="/" className="hover:text-gray-400">
-            Projects
-          </a>
-          <a href="/about" className="hover:text-gray-400">
-            About
-          </a>
-        </div>
-      </nav>
     <div className="h-[90vh] items-center flex justify-center mb-4 lg:px-0">
       <div className="flex justify-center flex-1 max-w-screen-xl bg-white border shadow sm:rounded-lg">
         {/* <!-- Left: Image --> */}
@@ -136,12 +124,14 @@ const Login = () => {
                       </button>
                     </div>
                   </div>
+                  {/* <Link to={"/"}> */}
                   <button
                     type="submit"
                     className="flex items-center justify-center w-full py-3 font-semibold tracking-wide text-gray-100 transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-500 focus:shadow-outline focus:outline-none"
                   >
                     Login
                   </button>
+                  {/* </Link> */}
                   <p className="text-sm font-light text-center text-gray dark:text-gray">
                     Don’t have an account yet?{" "}
                     <Link
