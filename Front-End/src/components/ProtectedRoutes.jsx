@@ -1,11 +1,18 @@
-import { Outlet, Navigate } from "react-router-dom";
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoutes = () => {
-  // Retrieve user from localStorage
-  const user = JSON.parse(localStorage.getItem("devuser"));
+  const user = localStorage.getItem("devuser"); // Get the user data from localStorage
 
-  // Check if the user is authenticated
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  let parsedUser;
+  try {
+    parsedUser = user ? JSON.parse(user) : null; // Safely parse user data
+  } catch (error) {
+    console.error("Error parsing user data:", error);
+    parsedUser = null; // Fallback to null in case of error
+  }
+
+  return parsedUser ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoutes;

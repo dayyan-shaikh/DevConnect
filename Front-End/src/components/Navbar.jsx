@@ -1,7 +1,23 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
+  const navigate = useNavigate();
+
+  // Check login status on component mount
+  useEffect(() => {
+    const user = localStorage.getItem("devuser");
+    setIsLoggedIn(!!user); // Set to true if user exists
+  }, []);
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem("devuser"); // Clear user data from localStorage
+    setIsLoggedIn(false); // Update login state
+    navigate("/login"); // Redirect to login page
+  };
+
   return (
     <div>
       <nav className="bg-gray-700 text-white p-6 flex justify-around items-center">
@@ -12,7 +28,6 @@ const Navbar = () => {
           </div>
           <h1 className="text-3xl font-bold">DevConnect</h1>
         </div>
-
         {/* Navigation Links */}
         <div className="hidden md:flex text-lg space-x-8">
           <a href="/developers" className="hover:text-gray-400">
@@ -25,19 +40,28 @@ const Navbar = () => {
             About
           </a>
           <a href="/profile" className="hover:text-gray-400">
-            Profile
+            My Profile
           </a>
         </div>
 
-        {/* Login/SignUp */}
-        <Link to={"/login"}>
-          <button className="bg-gray-800 px-4 py-2 rounded hover:bg-gray-900">
-            Login/Sign Up
+        {/* Conditional Rendering for Login/Logout */}
+        {isLoggedIn ? (
+          <button
+            onClick={handleLogout}
+            className="bg-gray-800 px-4 py-2 rounded hover:bg-gray-900"
+          >
+            Logout
           </button>
-        </Link>
+        ) : (
+          <Link to={"/login"}>
+            <button className="bg-gray-800 px-4 py-2 rounded hover:bg-gray-900">
+              Login/Sign Up
+            </button>
+          </Link>
+        )}
       </nav>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -17,9 +17,9 @@ const About = () => {
 
         {/* Info Section */}
         <div className="lg:ml-8 text-center lg:text-left">
-          <h2 className="text-3xl font-bold text-gray-800">Mubeen Shaikh</h2>
+          <h2 className="text-3xl font-bold text-gray-800">Dayayan Shaikh</h2>
           <p className="text-gray-600 mt-2">
-            Python | Senior Software Analyst | Web Developer
+            Web Developer
           </p>
           <p className="text-gray-500 mt-1">Based in Mumbai, INDIA</p>
         </div>
@@ -29,7 +29,7 @@ const About = () => {
       <section className="mt-8">
         <h3 className="text-2xl font-semibold text-gray-800">ABOUT ME</h3>
         <p className="text-gray-600 mt-2">
-          Hello Developer, This is <span className="font-bold">Mubeen 👋</span>, author of
+          Hello Developer, This is <span className="font-bold">Dayayan 👋</span>, author of
           DevModule Community. Currently I'm working as a
           <span className="font-bold"> Senior Software Analyst 👨‍💻</span> and looking
           for a domain switch into <span className="font-bold">Python Development</span>. Because
