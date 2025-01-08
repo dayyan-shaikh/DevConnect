@@ -7,7 +7,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Profile from "./components/Profile";
 import Navbar from "./components/Navbar";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+// import ProtectedRoutes from "./components/ProtectedRoutes";
 import LoadingSpinner from "./components/LoadingSpinner";
 
 const AppRoutes = () => {
@@ -32,9 +32,9 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route element={<ProtectedRoutes />}>
+        {/* <Route element={<ProtectedRoutes />}> */}
           <Route path="/profile" element={<Profile />} />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </>
   );

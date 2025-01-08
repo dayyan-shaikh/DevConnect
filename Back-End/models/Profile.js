@@ -54,6 +54,12 @@ const profileSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
+    skills: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Skill",
+      },
+    ],
     // Reference to Projects: one profile can have many projects
     projects: [
     {
