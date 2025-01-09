@@ -45,15 +45,6 @@ const Developers = () => {
               <p className="text-gray-600">
                 Frontend Developer | React.js Enthusiast
               </p>
-              <p className="text-gray-600">
-                Frontend Developer | React.js Enthusiast
-              </p>
-              <p className="text-gray-600">
-                Frontend Developer | React.js Enthusiast
-              </p>
-              <p className="text-gray-600">
-                Frontend Developer | React.js Enthusiast
-              </p>
             </div>
           </div>
           {/* Card 2 */}
@@ -65,15 +56,6 @@ const Developers = () => {
             />
             <div className="p-6">
               <h3 className="text-xl font-bold mb-2">Jane Smith</h3>
-              <p className="text-gray-600">
-                Full Stack Developer | MERN Stack Specialist
-              </p>
-              <p className="text-gray-600">
-                Full Stack Developer | MERN Stack Specialist
-              </p>
-              <p className="text-gray-600">
-                Full Stack Developer | MERN Stack Specialist
-              </p>
               <p className="text-gray-600">
                 Full Stack Developer | MERN Stack Specialist
               </p>
@@ -103,15 +85,6 @@ const Developers = () => {
               <p className="text-gray-600">
                 Backend Developer | Node.js Expert
               </p>
-              <p className="text-gray-600">
-                Backend Developer | Node.js Expert
-              </p>
-              <p className="text-gray-600">
-                Backend Developer | Node.js Expert
-              </p>
-              <p className="text-gray-600">
-                Backend Developer | Node.js Expert
-              </p>
             </div>
           </div>
           {/* Add more cards */}
@@ -123,9 +96,6 @@ const Developers = () => {
             />
             <div className="p-6">
               <h3 className="text-xl font-bold mb-2">Emily Davis</h3>
-              <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
-              <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
-              <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
               <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
               <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
               <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
@@ -148,18 +118,6 @@ const Developers = () => {
               <p className="text-gray-600">
                 Mobile App Developer | Flutter Expert
               </p>
-              <p className="text-gray-600">
-                Mobile App Developer | Flutter Expert
-              </p>
-              <p className="text-gray-600">
-                Mobile App Developer | Flutter Expert
-              </p>
-              <p className="text-gray-600">
-                Mobile App Developer | Flutter Expert
-              </p>
-              <p className="text-gray-600">
-                Mobile App Developer | Flutter Expert
-              </p>
             </div>
           </div>
           <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
@@ -173,9 +131,6 @@ const Developers = () => {
               <p className="text-gray-600">Data Scientist | Python & ML</p>
               <p className="text-gray-600">Data Scientist | Python & ML</p>
               <p className="text-gray-600">Data Scientist | Python & ML</p>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
             </div>
           </div>
           <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
@@ -186,6 +141,8 @@ const Developers = () => {
             />
             <div className="p-6">
               <h3 className="text-xl font-bold mb-2">Sarah Wilson</h3>
+              <p className="text-gray-600">Data Scientist | Python & ML</p>
+              <p className="text-gray-600">Data Scientist | Python & ML</p>
               <p className="text-gray-600">Data Scientist | Python & ML</p>
             </div>
           </div>
