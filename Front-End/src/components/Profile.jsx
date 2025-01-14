@@ -16,13 +16,15 @@ const Profile = () => {
                 alt="Profile"
                 className="w-32 h-32 mx-auto rounded-full border-4 border-blue-200"
               />
+              <Link to={'/addprofile'}>
               <button className="absolute top-[-10px] right-16 transform -translate-x-1/4 bg-blue-100 text-blue-600 text-sm px-2 py-1 rounded-full hover:bg-blue-200">
                 ✏️ Edit
               </button>
+              </Link>
             </div>
             {/* User Info */}
-            <h2 className="text-xl font-bold mt-4">Dayyan Shaikh</h2>
-            <p className="text-gray-500">Web Developer</p>
+            {/* <h2 className="text-xl font-bold mt-4">Dayyan Shaikh</h2>
+            <p className="text-gray-500">Web Developer</p> */}
             {/* Social Links */}
             <div className="flex justify-center mt-4 space-x-4 text-gray-500">
               <a href="#" className="hover:text-blue-500">

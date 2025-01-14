@@ -10,9 +10,11 @@ import Profile from "./components/Profile";
 import Navbar from "./components/Navbar";
 import AddSkill from "./components/AddSkill";
 import AddProject from "./components/AddProject";
+import AddProfile from "./components/AddProfile";
 import './App.css'
 // import ProtectedRoutes from "./components/ProtectedRoutes";
 import LoadingSpinner from "./components/LoadingSpinner";
+
 
 const AppRoutes = () => {
   const [loading, setLoading] = useState(false); // Track loading state
@@ -38,6 +40,7 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/addskill" element={<AddSkill/>}/>
         <Route path="/addproject" element={<AddProject/>}/>
+        <Route path="/addprofile" element={<AddProfile/>}/>
         {/* <Route element={<ProtectedRoutes />}> */}
           <Route path="/profile" element={<Profile />} />
         {/* </Route> */}
