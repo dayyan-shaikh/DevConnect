@@ -47,7 +47,7 @@ const AddSkill = () => {
 
               {/* Submit Button */}
               <input
-                className="btn btn--sub btn--lg bg-blue-500 text-white px-6 py-3 rounded w-full hover:bg-blue-600"
+                className="btn btn--sub btn--lg bg-gray-700 text-white px-6 py-3 rounded w-full hover:bg-gray-800 cursor-pointer"
                 type="submit"
                 value="Submit"
               />

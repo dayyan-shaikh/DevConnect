@@ -113,7 +113,7 @@ const AddProject = () => {
               {/* Submit Button */}
               <div>
                 <input
-                  className="btn btn--sub btn--lg w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
+                  className="btn btn--sub btn--lg w-full bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 cursor-pointer"
                   type="submit"
                   value="Submit"
                 />

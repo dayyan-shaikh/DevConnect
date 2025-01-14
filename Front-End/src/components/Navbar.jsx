@@ -21,6 +21,7 @@ const Navbar = () => {
   return (
     <div>
       <nav className="bg-gray-700 text-white p-6 flex justify-around items-center">
+        <Link to={'/'}>
         <div className="flex items-center space-x-2 cursor-pointer">
           {/* Logo */}
           <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
@@ -28,6 +29,7 @@ const Navbar = () => {
           </div>
           <h1 className="text-3xl font-bold">DevConnect</h1>
         </div>
+        </Link>
         {/* Navigation Links */}
         <div className="hidden md:flex text-lg space-x-8">
           <a href="/developers" className="hover:text-gray-400">
