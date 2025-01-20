@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
@@ -15,6 +17,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("devuser"); // Clear user data from localStorage
     setIsLoggedIn(false); // Update login state
+    toast.success('Logged out successfully');
     navigate("/login"); // Redirect to login page
   };
 

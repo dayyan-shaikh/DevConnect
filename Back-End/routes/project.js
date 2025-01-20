@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 // Create a project
 router.post("/createproject", async (req, res) => {
   try {
-    const { profileId, title, featured_image, description, demo_link, source_link, userId } = req.body;
+    const { profileId, title, featured_image, description, demo_link, source_link } = req.body;
 
     // Check if the profile exists
     const profile = await Profile.findById(profileId);
@@ -23,7 +23,7 @@ router.post("/createproject", async (req, res) => {
       description,
       demo_link,
       source_link,
-      user: userId,
+      // user: userId,
       profile: profile._id, // Associate with the profile
     });
 
@@ -67,4 +67,5 @@ router.delete("/deleteproject/:id", async (req, res) => {
       res.status(500).json({ message: "Server error", success: false });
     }
   });
+
 module.exports = router;

@@ -9,11 +9,11 @@ const SkillSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  // userId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "User",
+  //   required: true,
+  // },
   profile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Profile",

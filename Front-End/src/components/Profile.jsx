@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ProfileSkills from "./ProfileSkills";
 
 const Profile = () => {
   return (
@@ -16,10 +17,10 @@ const Profile = () => {
                 alt="Profile"
                 className="w-32 h-32 mx-auto rounded-full border-4 border-blue-200"
               />
-              <Link to={'/addprofile'}>
-              <button className="absolute top-[-10px] right-16 transform -translate-x-1/4 bg-blue-100 text-blue-600 text-sm px-2 py-1 rounded-full hover:bg-blue-200">
-                ✏️ Edit
-              </button>
+              <Link to={"/addprofile"}>
+                <button className="absolute top-[-10px] right-16 transform -translate-x-1/4 bg-blue-100 text-blue-600 text-sm px-2 py-1 rounded-full hover:bg-blue-200">
+                  ✏️ Edit
+                </button>
               </Link>
             </div>
             {/* User Info */}
@@ -55,19 +56,11 @@ const Profile = () => {
             </div>
 
             {/* Skills Section */}
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-lg font-bold mb-2">Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                <Link to={"/addskill"}>
-                  <button className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-200">
-                    + Add Skill
-                  </button>
-                </Link>
-              </div>
+            <div className="profile-container">
+              {/* Other profile sections */}
+              <ProfileSkills />
             </div>
-            <p className="text-gray-500 mb-4">
-              You have not uploaded any skills yet
-            </p>
+            
             {/* Projects Section */}
             <div className="mb-6 flex items-center justify-between">
               <h3 className="text-lg font-bold mb-2">Projects</h3>

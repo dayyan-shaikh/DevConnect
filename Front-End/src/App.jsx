@@ -11,6 +11,9 @@ import Navbar from "./components/Navbar";
 import AddSkill from "./components/AddSkill";
 import AddProject from "./components/AddProject";
 import AddProfile from "./components/AddProfile";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import CanvasCursor from "./components/CanvasCursor";
 import './App.css'
 // import ProtectedRoutes from "./components/ProtectedRoutes";
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -32,6 +35,7 @@ const AppRoutes = () => {
   return (
     <>
       {loading && <LoadingSpinner />} {/* Show the spinner while loading */}
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Projects />} />
         <Route path="/developers" element={<Developers />} />
@@ -52,6 +56,7 @@ const AppRoutes = () => {
 const App = () => {
   return (
     <BrowserRouter>
+    {/* <CanvasCursor/> */}
       <Navbar />
       <AppRoutes /> {/* Render AppRoutes inside BrowserRouter */}
     </BrowserRouter>

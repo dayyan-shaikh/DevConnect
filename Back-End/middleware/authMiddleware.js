@@ -5,19 +5,17 @@ const { getCurrentUser } = require('../utils/jwtUtils');
 
 const authenticate = async (req, res, next) => {
   try {
-    // Extract the token from the Authorization header
-    const token = req.headers.authorization && req.headers.authorization.split(' ')[1]; // Get token after "Bearer"
-    
-    if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'No token provided or malformed header' });
     }
 
-    // Get the current user from the token
-    const userProfile = await getCurrentUser(token);
-    req.user = userProfile; // Attach user profile to the request object
-
-    next(); // Proceed to the next middleware or route handler
+    const token = authHeader.split(' ')[1];
+    const userProfile = await getCurrentUser(token); // Fetch user profile
+    req.user = userProfile; // Attach profile to the request
+    next(); // Proceed to the next middleware or route
   } catch (error) {
+    console.error('Authentication error:', error.message);
     return res.status(401).json({ message: 'Unauthorized: ' + error.message });
   }
 };

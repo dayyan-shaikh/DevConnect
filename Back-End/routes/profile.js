@@ -44,6 +44,7 @@ router.post("/profile", async (req, res) => {
           success: false,
         });
     }
+    console.log(userId)
 
     // Create a new profile
     const newProfile = new Profile({
@@ -77,23 +78,20 @@ router.post("/profile", async (req, res) => {
   }
 });
 
-// Get a user's profile by userId
-router.get("/profile/:userId", async (req, res) => {
+// Get a user's profile by profileId
+router.get("/profile/:profileId", async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { profileId } = req.params;
 
     // Validate if the userId is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    if (!mongoose.Types.ObjectId.isValid(profileId)) {
       return res
         .status(400)
         .json({ message: "Invalid user ID format", success: false });
     }
 
     // Fetch the profile of the user
-    const profile = await Profile.findOne({ user: userId }).populate(
-      "user",
-      "username email"
-    );
+    const profile = await Profile.findById(profileId).populate("user");
 
     if (!profile) {
       return res
@@ -151,51 +149,6 @@ router.delete('/:profileId', async (req, res) => {
   }
 });
 
-
-router.delete("/user/:id", async (req, res) => {
-  try {
-    const userId = req.params.id;
-
-    // Find the user by ID and remove
-    const user = await User.findByIdAndDelete(userId);
-    console.log("Deleted user:", user);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found", success: false });
-    }
-
-    res
-      .status(200)
-      .json({ message: "User deleted successfully", success: true });
-  } catch (error) {
-    res.status(500).json({ error: "Server error", success: false });
-  }
-});
-
-router.delete("/user/all", async (req, res) => {
-  try {
-    // Deleting all users
-    console.log("heeeeee");
-    const result = await User.deleteMany({});
-
-    // Check if any users were deleted
-    if (result.deletedCount === 0) {
-      return res
-        .status(404)
-        .json({ message: "No users found to delete", success: false });
-    }
-
-    res
-      .status(200)
-      .json({ message: "All users deleted successfully", success: true });
-  } catch (error) {
-    console.error("Error deleting all users:", error);
-    res.status(500).json({ error: "Server error", success: false });
-  }
-});
-
 // Update a profile
 
 router.patch('/update', authenticate, async (req, res) => {
@@ -215,22 +168,24 @@ router.patch('/update', authenticate, async (req, res) => {
     } = req.body;
 
     const currentUser = req.user; // Current user is attached to the request by the authenticate middleware
-    const userProfile = await Profile.findOne({ where: { userId: currentUser.id } });
+    console.log(currentUser)
 
-    if (!userProfile) {
+    const userProfile = currentUser
+    // const userProfile = await Profile.findOne({ where: { _id: currentUser.id } });
+    if (!currentUser) {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
     // If profile image is provided, update it
-    let profileImageUrl = userProfile.profileImage;
-    if (profileImage) {
-      profileImageUrl = await uploadProfileImage(profileImage);
-    }
+    // let profileImageUrl = userProfile.profileImage;
+    // if (profileImage) {
+    //   profileImageUrl = await uploadProfileImage(profileImage);
+    // }
 
     // Update the profile with the new data
     userProfile.firstName = firstName || userProfile.firstName;
     userProfile.lastName = lastName || userProfile.lastName;
-    userProfile.profileImage = profileImageUrl;
+    // userProfile.profileImage = profileImageUrl;
     userProfile.location = location || userProfile.location;
     userProfile.shortIntro = shortIntro || userProfile.shortIntro;
     userProfile.bio = bio || userProfile.bio;

@@ -2,7 +2,8 @@ import React, { useState,useEffect } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 
@@ -38,16 +39,16 @@ const Login = () => {
 
       if (res.data.success) {
         setIsAuthenticated(true);
-        toast.success(res.data.message);
+        toast.success('User Logged In successfully!');
         localStorage.setItem("devuser", JSON.stringify(res.data.user));
         localStorage.setItem("token", res.data.token); // Store the token
         navigate("/");
       }
-      localStorage.setItem("devuser", JSON.stringify(res.data.user));
+      // localStorage.setItem("devuser", JSON.stringify(res.data.user));
     } catch (error) {
       localStorage.removeItem("devuser");
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error('Failed to Login User');
     }
   };
   useEffect(() => {

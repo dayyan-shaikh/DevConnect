@@ -21,11 +21,16 @@ const projectSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId, // Reference to User model
-      ref: 'User',
-      required: true,
-    },
+    // user: {
+    //   type: mongoose.Schema.Types.ObjectId, // Reference to User model
+    //   ref: 'User',
+    //   required: true,
+    // },
+    profile: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Profile",
+        required: true,
+      },
     created_at: {
       type: Date,
       default: Date.now,

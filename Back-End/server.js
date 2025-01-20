@@ -1,24 +1,32 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const connectDB = require("./config/db");
-const authRoutes = require("./routes/auth");
-const profileRoutes = require("./routes/profile")
-const projectRoutes = require("./routes/project")
-const skillRoutes = require("./routes/skill")
+import swaggerDocs from './swagger.js'
+import express from 'express'
+import dotenv from 'dotenv';
+import cors from 'cors';
+import connectDB from './config/db.js';  // Note the .js extension for ES Modules
+import authRoutes from './routes/auth.js';
+import profileRoutes from './routes/profile.js';
+import projectRoutes from './routes/project.js';
+import skillRoutes from './routes/skill.js';
+// const express = require("express");
+// const dotenv = require("dotenv");
+// const cors = require("cors");
+// const connectDB = require("./config/db");
+// const authRoutes = require("./routes/auth");
+// const profileRoutes = require("./routes/profile")
+// const projectRoutes = require("./routes/project")
+// const skillRoutes = require("./routes/skill")
 
 dotenv.config();
 connectDB(); // Connect to MongoDB Atlas
 
 const app = express();
-
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5174',
+  origin: 'http://localhost:5173',
   credentials: true,
 }));
 app.options("*", cors({
-  origin: 'http://localhost:5174',
+  origin: 'http://localhost:5173',
   credentials: true,
 }));
 app.use(express.json()); // Parse JSON requests
@@ -33,4 +41,5 @@ app.use("/skill",skillRoutes)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  swaggerDocs(app, PORT);
 });
