@@ -30,14 +30,14 @@ const AddSkill = () => {
           }
           
           const response = await axios.get(
-            `http://localhost:5000/skill/${skillId}`,  // Use the skillId in the URL
+            `http://localhost:5000/skill/skill/${skillId}`,  // Use the skillId in the URL
             {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
-
+          console.log(response.data);         
           if (response.data.success) {
             setSkill(response.data.skill.name);
             setDescription(response.data.skill.description);
