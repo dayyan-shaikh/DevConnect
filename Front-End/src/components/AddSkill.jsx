@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddSkill = () => {
@@ -15,10 +15,12 @@ const AddSkill = () => {
   // Extract skillId from query params
   const queryParams = new URLSearchParams(location.search);
   const skillId = queryParams.get('edit'); // `edit` parameter contains the skillId
-
+  
   useEffect(() => {
     if (skillId) {
       // Fetch skill data if editing
+      console.log(skillId);
+      
       const fetchSkill = async () => {
         try {
           const token = localStorage.getItem('token');
@@ -26,10 +28,9 @@ const AddSkill = () => {
             console.error('No token found!');
             return;
           }
-          console.log(skillId);
           
           const response = await axios.get(
-            `http://localhost:5000/skill/${skillId}`,
+            `http://localhost:5000/skill/${skillId}`,  // Use the skillId in the URL
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -76,7 +77,7 @@ const AddSkill = () => {
 
         if (response.data.success) {
           toast.success('Skill updated successfully!');
-          setTimeout(() => navigate('/profile'), 2000);
+          setTimeout(() => navigate('/profile'), 1000);
         } else {
           toast.error('Failed to update skill');
         }

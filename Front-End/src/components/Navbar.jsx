@@ -35,18 +35,18 @@ const Navbar = () => {
         </Link>
         {/* Navigation Links */}
         <div className="hidden md:flex text-lg space-x-8">
-          <a href="/developers" className="hover:text-gray-400">
+          <Link to={"/developers"} className="hover:text-gray-400">
             Developers
-          </a>
-          <a href="/" className="hover:text-gray-400">
+          </Link>
+          <Link to={"/"} className="hover:text-gray-400">
             Projects
-          </a>
-          <a href="/about" className="hover:text-gray-400">
+          </Link>
+          <Link to={"/about"} className="hover:text-gray-400">
             About
-          </a>
-          <a href="/profile" className="hover:text-gray-400">
+          </Link>
+          <Link to="/profile" className="hover:text-gray-400">
             My Profile
-          </a>
+          </Link>
         </div>
 
         {/* Conditional Rendering for Login/Logout */}

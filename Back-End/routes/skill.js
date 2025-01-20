@@ -116,21 +116,34 @@ router.get('/getSkills', authenticate, async (req, res) => {
 });
 
 // Get a specific skill
+// router.get('/skill/:id', authenticate, async (req, res) => {
+//   try {
+//     const skill = await Skill.findById(req.params.id);
+//     console.log(skill);
+    
+//     if (!skill) {
+//       return res.status(404).json({ message: 'Skill not found' });
+//     }
+//     res.status(200).json({ skill });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching skill' });
+//   }
+// });
+
 router.get('/skill/:id', authenticate, async (req, res) => {
   try {
-    const skill = await Skill.findById(req.params.id);
-    console.log(skill);
+    const { id: skillId } = req.params;  // Extract skillId from URL params
+    const skill = await Skill.findById(skillId);  // Query database using skillId
     
     if (!skill) {
       return res.status(404).json({ message: 'Skill not found' });
     }
     res.status(200).json({ skill });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Error fetching skill' });
   }
 });
-
-
 // Delete Skill
 router.delete("/deleteskill/:id", async (req, res) => {
   try {
