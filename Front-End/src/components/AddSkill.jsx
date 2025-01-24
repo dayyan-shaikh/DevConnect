@@ -18,9 +18,7 @@ const AddSkill = () => {
   
   useEffect(() => {
     if (skillId) {
-      // Fetch skill data if editing
-      console.log(skillId);
-      
+      // Fetch skill data if editing      
       const fetchSkill = async () => {
         try {
           const token = localStorage.getItem('token');
@@ -37,7 +35,7 @@ const AddSkill = () => {
               },
             }
           );
-          console.log(response.data);         
+          // console.log(response.data);         
           if (response.data.success) {
             setSkill(response.data.skill.name);
             setDescription(response.data.skill.description);

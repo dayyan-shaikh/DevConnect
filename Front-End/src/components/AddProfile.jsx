@@ -1,7 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddProfile = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const profileId = queryParams.get('user'); // Get profileId from the query parameter
+
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -16,6 +23,65 @@ const AddProfile = () => {
     website: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
+  // Fetch profile data on component load
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!profileId) {
+        toast.error("Profile ID is missing.");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found!");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `http://localhost:5000/profile/profile/${profileId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        
+        if (response.data.success) {
+          const profile = response.data.profile;
+          setFormData({
+            fname: profile.firstName || "",
+            lname: profile.lastName || "",
+            profileImage: profile.profileImage || null,
+            location: profile.location || "",
+            bio: profile.bio || "",
+            github: profile.socialGithub || "",
+            twitter: profile.socialTwitter || "",
+            youtube: profile.socialYoutube || "",
+            linkedin: profile.socialLinkedin || "",
+            website: profile.socialWebsite || "",
+          });
+        } else {
+          toast.error("Failed to fetch profile details.");
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        toast.error("Error loading profile details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [profileId]); // Make sure to refetch if profileId changes
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
@@ -25,10 +91,47 @@ const AddProfile = () => {
     const file = e.target.files[0];
     setFormData({ ...formData, profileImage: file });
   };
-
-  const handleSubmit = (e) => {
+  const token = localStorage.getItem('token') || 'your-jwt-token-here';
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted: ", formData);
+    setLoading(true);
+
+    const formDataToSubmit = {
+      firstName: formData.fname,
+      lastName: formData.lname,
+      location: formData.location,
+      bio: formData.bio,
+      socialGithub: formData.github,
+      socialTwitter: formData.twitter,
+      socialYoutube: formData.youtube,
+      socialLinkedin: formData.linkedin,
+      socialWebsite: formData.website,
+    };
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/profile/update`,
+        formDataToSubmit,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Profile updated successfully!");
+        navigate("/profile");
+      } else {
+        toast.error("Failed to update profile.");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Error updating profile.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -83,10 +186,10 @@ const AddProfile = () => {
                 placeholder="Enter your last name"
                 value={formData.lname}
                 onChange={handleInputChange}
-                
               />
             </div>
 
+            {/* Other fields remain the same */}
             {/* Profile Picture */}
             <div className="form__field">
               <label
@@ -110,24 +213,6 @@ const AddProfile = () => {
               )}
             </div>
 
-            {/* Short Intro */}
-            <div className="form__field">
-              <label
-                htmlFor="shortIntro"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Short Intro
-              </label>
-              <input
-                id="shortIntro"
-                type="text"
-                className="input input--text w-full px-4 py-2 border rounded focus:outline-blue-500"
-                placeholder="Write a short intro"
-                value={formData.shortIntro}
-                onChange={handleInputChange}
-              />
-            </div>
-
             {/* Location */}
             <div className="form__field">
               <label
@@ -145,6 +230,22 @@ const AddProfile = () => {
                 onChange={handleInputChange}
               />
             </div>
+            {/* About */}
+            <div className="form__field">
+              <label
+                htmlFor="about"
+                className="block text-gray-700 font-semibold mb-2"
+              >
+                About
+              </label>
+              <textarea
+                id="about"
+                className="input input--textarea w-full px-4 py-2 border rounded focus:outline-blue-500"
+                placeholder="Write something awesome..."
+                value={formData.about}
+                onChange={handleInputChange}
+              ></textarea>
+            </div>
 
             {/* Bio */}
             <div className="form__field">
@@ -152,13 +253,13 @@ const AddProfile = () => {
                 htmlFor="bio"
                 className="block text-gray-700 font-semibold mb-2"
               >
-                Bio
+                Short Intro
               </label>
               <textarea
-                id="bio"
+                id="shortIntro"
                 className="input input--textarea w-full px-4 py-2 border rounded focus:outline-blue-500"
                 placeholder="Write something awesome..."
-                value={formData.bio}
+                value={formData.shortIntro}
                 onChange={handleInputChange}
               ></textarea>
             </div>
@@ -185,12 +286,14 @@ const AddProfile = () => {
               )
             )}
 
+            {/* Other form fields */}
             {/* Submit Button */}
             <div>
               <input
                 className="btn btn--sub btn--lg w-full bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 cursor-pointer"
                 type="submit"
-                value="Submit"
+                value={loading ? "Submitting..." : "Submit"}
+                disabled={loading}
               />
             </div>
           </form>

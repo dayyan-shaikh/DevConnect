@@ -21,13 +21,13 @@ const profileSchema = new mongoose.Schema({
     username: {
       type: String,
     },
+    about: {
+      type: String,
+    },
     location: {
       type: String,
     },
     shortIntro: {
-      type: String,
-    },
-    bio: {
       type: String,
     },
     socialGithub: {

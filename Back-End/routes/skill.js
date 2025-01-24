@@ -20,12 +20,10 @@ router.post("/createSkill", authenticate, async (req, res) => {
     // Check if the skill already exists for the user
     const existingSkill = await Skill.findOne({ name: name.toLowerCase() });
     if (existingSkill) {
-      return res
-        .status(400)
-        .json({
-          message: "Skill already exists in your profile",
-          success: false,
-        });
+      return res.status(400).json({
+        message: "Skill already exists in your profile",
+        success: false,
+      });
     }
 
     // Create the new skill
@@ -94,39 +92,42 @@ router.patch("/skills/:id", async (req, res) => {
 });
 
 // Get Skills
-router.get('/getSkills', authenticate, async (req, res) => {
+router.get("/getSkills", authenticate, async (req, res) => {
   try {
     const profile = req.user; // Current user is attached to the request by the authenticate middleware
     if (!profile) {
-      return res.status(404).json({ message: 'Profile not found', success: false });
+      return res
+        .status(404)
+        .json({ message: "Profile not found", success: false });
     }
 
     // Fetch all skills associated with the user's profile
     const skills = await Skill.find({ _id: { $in: profile.skills } });
 
     return res.status(200).json({
-      message: 'Skills fetched successfully',
+      message: "Skills fetched successfully",
       success: true,
       skills,
     });
   } catch (error) {
-    console.error('Error fetching skills:', error);
-    res.status(500).json({ message: 'Server error', success: false });
+    console.error("Error fetching skills:", error);
+    res.status(500).json({ message: "Server error", success: false });
   }
 });
 
-
-router.get('/skill/:id', authenticate, async (req, res) => {
+router.get("/skill/:id", authenticate, async (req, res) => {
   try {
-    const { id: skillId } = req.params;  // Extract skillId from URL params
-    const skill = await Skill.findById(skillId);  // Query database using skillId
+    const { id: skillId } = req.params; // Extract skillId from URL params
+    const skill = await Skill.findById(skillId); // Query database using skillId
     if (!skill) {
-      return res.status(404).json({ message: 'Skill not found' , success : false});
+      return res
+        .status(404)
+        .json({ message: "Skill not found", success: false });
     }
-    res.status(200).json({ skill, success:true});
+    res.status(200).json({ skill, success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error fetching skill' , success : false});
+    res.status(500).json({ message: "Error fetching skill", success: false });
   }
 });
 
