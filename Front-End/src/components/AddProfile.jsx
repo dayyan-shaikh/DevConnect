@@ -15,7 +15,7 @@ const AddProfile = () => {
     profileImage: null,
     shortIntro: "",
     location: "",
-    bio: "",
+    // bio: "",
     github: "",
     twitter: "",
     youtube: "",
@@ -57,7 +57,7 @@ const AddProfile = () => {
             lname: profile.lastName || "",
             profileImage: profile.profileImage || null,
             location: profile.location || "",
-            bio: profile.bio || "",
+            shortIntro: profile.shortIntro || "",
             github: profile.socialGithub || "",
             twitter: profile.socialTwitter || "",
             youtube: profile.socialYoutube || "",
@@ -100,7 +100,7 @@ const AddProfile = () => {
       firstName: formData.fname,
       lastName: formData.lname,
       location: formData.location,
-      bio: formData.bio,
+      shortIntro: formData.shortIntro,
       socialGithub: formData.github,
       socialTwitter: formData.twitter,
       socialYoutube: formData.youtube,
@@ -247,10 +247,10 @@ const AddProfile = () => {
               ></textarea>
             </div>
 
-            {/* Bio */}
+            {/* ShortIntro */}
             <div className="form__field">
               <label
-                htmlFor="bio"
+                htmlFor="shortIntro"
                 className="block text-gray-700 font-semibold mb-2"
               >
                 Short Intro
@@ -265,7 +265,7 @@ const AddProfile = () => {
             </div>
 
             {/* Social Links */}
-            {["GitHub", "Twitter", "YouTube", "LinkedIn", "Website"].map(
+            {["GitHub", "Twitter","LinkedIn", "Website"].map(
               (field) => (
                 <div className="form__field" key={field.toLowerCase()}>
                   <label
