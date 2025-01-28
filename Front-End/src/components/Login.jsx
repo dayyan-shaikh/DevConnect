@@ -39,7 +39,7 @@ const Login = () => {
 
       if (res.data.success) {
         setIsAuthenticated(true);
-        toast.success('User Logged In successfully!');
+        toast.success('User Logged In successfully!',{autoClose: 2000});
         localStorage.setItem("devuser", JSON.stringify(res.data.user));
         localStorage.setItem("token", res.data.token); // Store the token
         navigate("/");
@@ -48,7 +48,7 @@ const Login = () => {
     } catch (error) {
       localStorage.removeItem("devuser");
       console.log(error);
-      toast.error('Failed to Login User');
+      toast.error('Failed to Login User',{autoClose: 2000});
     }
   };
   useEffect(() => {
@@ -124,14 +124,12 @@ const Login = () => {
                       </button>
                     </div>
                   </div>
-                  {/* <Link to={"/"}> */}
                   <button
                     type="submit"
                     className="flex items-center justify-center w-full py-3 font-semibold tracking-wide text-gray-100 transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-500 focus:shadow-outline focus:outline-none"
                   >
                     Login
                   </button>
-                  {/* </Link> */}
                   <p className="text-sm font-light text-center text-gray dark:text-gray">
                     Don’t have an account yet?{" "}
                     <Link

@@ -82,7 +82,7 @@ router.post("/profile", async (req, res) => {
 router.get("/profile/:id", authenticate, async (req, res) => {
   try {
     const { id: profileId } = req.params; // Extract profileId from URL params
-
+    
     // Validate if profileId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(profileId)) {
       return res

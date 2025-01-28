@@ -45,10 +45,9 @@ const AppRoutes = () => {
         <Route path="/addskill" element={<AddSkill/>}/>
         <Route path="/addproject" element={<AddProject/>}/>
         <Route path="/addprofile" element={<AddProfile/>}/>
-        {/* <Route element={<ProtectedRoutes />}> */}
+         {/* <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated}/>}> */}
           <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:profileId" element={<Profile />} />
-        {/* </Route> */}
+         {/* </Route>  */}
       </Routes>
     </>
   );

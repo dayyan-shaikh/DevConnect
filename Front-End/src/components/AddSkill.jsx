@@ -57,7 +57,7 @@ const AddSkill = () => {
     e.preventDefault();
     setLoading(true);
 
-    const token = localStorage.getItem('token') || 'your-jwt-token-here';
+    const token = localStorage.getItem('token');
 
     try {
       if (editing) {

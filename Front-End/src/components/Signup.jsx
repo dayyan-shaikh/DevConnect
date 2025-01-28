@@ -44,10 +44,10 @@ const Signup = () => {
         }
       );
       if (res.data.success) {
-        toast.success('User Registered successfully!');
+        toast.success('User Registered successfully!',{autoClose: 2000});
         navigate("/login");
       } else {
-        toast.error('Failed to Register User');
+        toast.error('Failed to Register User',{autoClose: 2000});
       }
     } catch (error) {
       console.error(error);

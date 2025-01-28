@@ -1,7 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Developers = () => {
+  const [profiles, setProfiles] = useState([]);
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch profiles from API
+    const fetchProfiles = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/profile/profiles"
+        );
+        console.log(response.data);
+        setProfiles(response.data.profiles); // Assuming response.data is an array of profiles
+      } catch (error) {
+        console.error("Error fetching profiles:", error);
+      }
+    };
+
+    fetchProfiles();
+  }, []);
+
   return (
     <div>
       {/* Search Section */}
@@ -25,128 +46,21 @@ const Developers = () => {
       </div>
 
       {/* Cards Section */}
-      <div className="bg-gray-100 py-16 px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto cursor-pointer">
-          {/* Card 1 */}
-          <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
-            <img
-              src="https://images.pexels.com/photos/14653174/pexels-photo-14653174.jpeg"
-              alt="John Doe"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-2">John Doe</h3>
-              <p className="text-gray-600">
-                Frontend Developer | React.js Enthusiast
-              </p>
-              <p className="text-gray-600">
-                Frontend Developer | React.js Enthusiast
-              </p>
-              <p className="text-gray-600">
-                Frontend Developer | React.js Enthusiast
-              </p>
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 mt-10 gap-10 w-full max-w-screen-lg mx-auto">
+        {profiles.map((profile) => (
+          <div
+            key={profile.id}
+            className="p-4 bg-white shadow-md rounded-lg cursor-pointer hover:shadow-lg transition flex items-center justify-center"
+            // onClick={() => handleCardClick(profile.id)}
+          > 
+            <h2 className="mt-4 text-lg font-bold">
+              {profile?.firstName || "First Name"}{" "}
+              {profile?.lastName || "Last Name"}
+            </h2>
+            <p className="text-gray-600">{profile?.shortIntro}</p>
+            <p className="text-gray-500">{profile?.location}</p>
           </div>
-          {/* Card 2 */}
-          <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
-            <img
-              src="https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"
-              alt="Jane Smith"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-2">Jane Smith</h3>
-              <p className="text-gray-600">
-                Full Stack Developer | MERN Stack Specialist
-              </p>
-              <p className="text-gray-600">
-                Full Stack Developer | MERN Stack Specialist
-              </p>
-              <p className="text-gray-600">
-                Full Stack Developer | MERN Stack Specialist
-              </p>
-            </div>
-          </div>
-          {/* Card 3 */}
-          <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
-            <img
-              src="https://images.pexels.com/photos/14653174/pexels-photo-14653174.jpeg"
-              alt="Alex Johnson"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-2">Alex Johnson</h3>
-              <p className="text-gray-600">
-                Backend Developer | Node.js Expert
-              </p>
-              <p className="text-gray-600">
-                Backend Developer | Node.js Expert
-              </p>
-              <p className="text-gray-600">
-                Backend Developer | Node.js Expert
-              </p>
-            </div>
-          </div>
-          {/* Add more cards */}
-          <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="Emily Davis"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-2">Emily Davis</h3>
-              <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
-              <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
-              <p className="text-gray-600">UI/UX Designer | Figma Specialist</p>
-            </div>
-          </div>
-          <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="Michael Brown"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-2">Michael Brown</h3>
-              <p className="text-gray-600">
-                Mobile App Developer | Flutter Expert
-              </p>
-              <p className="text-gray-600">
-                Mobile App Developer | Flutter Expert
-              </p>
-              <p className="text-gray-600">
-                Mobile App Developer | Flutter Expert
-              </p>
-            </div>
-          </div>
-          <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="Sarah Wilson"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-2">Sarah Wilson</h3>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-            </div>
-          </div>
-          <div className="bg-white shadow-md rounded-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="Sarah Wilson"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-2">Sarah Wilson</h3>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-              <p className="text-gray-600">Data Scientist | Python & ML</p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
