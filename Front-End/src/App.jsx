@@ -56,7 +56,7 @@ const AppRoutes = () => {
 const App = () => {
   return (
     <BrowserRouter>
-    {/* <CanvasCursor/> */}
+    {/* <CanvasCursor /> */}
       <Navbar />
       <AppRoutes /> {/* Render AppRoutes inside BrowserRouter */}
     </BrowserRouter>
