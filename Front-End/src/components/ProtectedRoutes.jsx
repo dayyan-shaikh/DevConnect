@@ -1,36 +1,35 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import Login from "./Login";
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ProtectedRoutes = () => {
-  // Get the user and token from localStorage
-  const user = localStorage.getItem("devuser");
-  const token = localStorage.getItem("token");
+const ProtectedRoutes = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(null); // Initially null for loading state
 
-  let isAuthenticated = false;
+  useEffect(() => {
+    const user = localStorage.getItem("devuser");
+    const token = localStorage.getItem("token");
 
-  try {
-    // Validate user and token
-    isAuthenticated = user && token && JSON.parse(user);
-  } catch (error) {
-    console.error("Error parsing user data:", error);
+    if (user && token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+
+    if (!token) {
+      toast.error("Please Login to Access MyProfile", { autoClose: 2000 });
+    }
+  }, []);
+
+  if (isAuthenticated === null) {
+    return <div>Loading...</div>; // Optionally show loading state
   }
 
   if (!isAuthenticated) {
-    // Show a toast notification if the user is not authenticated
-    toast.error("You must log in to access this page!", {
-      toastId: "protected-route-error",
-      autoClose: 2000,
-    });
-
-    // Redirect to the login page
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" />; // Redirect to login if not authenticated
   }
 
-  // Render the child components if the user is authenticated
-  return <Outlet />;
+  return <>{children}</>; // Render children (protected routes) if authenticated
 };
 
 export default ProtectedRoutes;

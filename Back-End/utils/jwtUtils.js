@@ -25,6 +25,8 @@ const getCurrentUser = async (token) => {
     // Decode the token and extract the user ID
     const decoded = await verifyToken(token);
     const userId = decoded.id;
+    console.log(userId);
+    
 
     // Fetch the user from the database
     const user = await User.findById(userId);
@@ -46,4 +48,3 @@ const getCurrentUser = async (token) => {
 };
 // console.log(getCurrentUser)
 module.exports = { getCurrentUser };
-// module.exports = { verifyToken }

@@ -13,7 +13,7 @@ const Developers = () => {
         const response = await axios.get(
           "http://localhost:5000/profile/profiles"
         );
-        console.log("API Response:", response.data); // Log response to inspect data
+        // console.log("API Response:", response.data); // Log response to inspect data
         if (Array.isArray(response.data.profiles)) {
           setProfiles(response.data.profiles); // Access profiles inside response.data
         } else {
@@ -61,7 +61,7 @@ const Developers = () => {
         <div className="flex w-full max-w-xl gap-2 mt-8">
           <input
             type="text"
-            placeholder="Search by Project Title"
+            placeholder="Search Profile"
             className="w-full p-3 border border-gray-300 focus:outline-none rounded-md"
           />
           <button className="bg-gray-800 text-lg w-44 text-white px-6 rounded-md hover:bg-gray-900">

@@ -10,8 +10,6 @@ const Profile = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const profileId = queryParams.get("user");
-  console.log("Extracted profileId:", profileId);
-  console.log(location.search);
   
 
   useEffect(() => {

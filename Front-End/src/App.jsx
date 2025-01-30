@@ -15,7 +15,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import CanvasCursor from "./components/CanvasCursor";
 import './App.css'
-// import ProtectedRoutes from "./components/ProtectedRoutes";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 import LoadingSpinner from "./components/LoadingSpinner";
 
 
@@ -45,9 +45,9 @@ const AppRoutes = () => {
         <Route path="/addskill" element={<AddSkill/>}/>
         <Route path="/addproject" element={<AddProject/>}/>
         <Route path="/addprofile" element={<AddProfile/>}/>
-         {/* <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated}/>}> */}
-          <Route path="/profile" element={<Profile />} />
-         {/* </Route>  */}
+         <Route element={<ProtectedRoutes />}>
+          <Route path="/profile/:profileId" element={<Profile />} />
+         </Route> 
       </Routes>
     </>
   );
