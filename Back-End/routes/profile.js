@@ -44,6 +44,7 @@ router.post("/profile", async (req, res) => {
           success: false,
         });
     }
+    console.log("User ID")
     console.log(userId)
 
     // Create a new profile
@@ -64,6 +65,7 @@ router.post("/profile", async (req, res) => {
     });
 
     await newProfile.save();
+    console.log("New Profile ID");
     console.log(newProfile);
     res
       .status(201)
@@ -82,7 +84,10 @@ router.post("/profile", async (req, res) => {
 router.get("/profile/:id", authenticate, async (req, res) => {
   try {
     const { id: profileId } = req.params; // Extract profileId from URL params
+    console.log("current profile");
+    console.log(profileId);
     
+
     // Validate if profileId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(profileId)) {
       return res

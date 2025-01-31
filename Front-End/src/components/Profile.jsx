@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
-import ProfileSkills from "./ProfileSkills"; // Assuming you have a component for skills
+import ProfileSkills from "./ProfileSkills";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -28,7 +28,7 @@ const Profile = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:5000/profile/profile/${profileId}`, // Update this to your endpoint
+          `http://localhost:5000/profile/${profileId}`, // Update this to your endpoint
           {
             headers: {
               Authorization: `Bearer ${token}`,

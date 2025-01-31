@@ -1,34 +1,9 @@
-// import React, { useState, useEffect } from "react";
 import { Link} from "react-router-dom";
-// import { toast } from "react-toastify";
 import { useAuth } from '../context/AuthContext'; 
 import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = () => {
-  const { isLoggedIn, logout } = useAuth(); // Track login status
-  // const navigate = useNavigate();
-
-  // Check login status on component mount
-  // useEffect(() => {
-  //   const user = localStorage.getItem("devuser");
-  //   const token = localStorage.getItem("token");
-  //   console.log("Token from localStorage:", token);  // Debugging: Log token
-  //   console.log("User from localStorage:", user);
-  //   if (user && token) {
-  //     setIsLoggedIn(true); // User is logged in
-  //   } else {
-  //     setIsLoggedIn(false); // User is not logged in
-  //   }
-  // }, []);
-
-  // // Logout function
-  // const handleLogout = () => {
-  //   localStorage.removeItem("devuser"); // Clear user data from localStorage
-  //   localStorage.removeItem("token"); // Clear token from localStorage
-  //   setIsLoggedIn(false); // Update login state
-  //   toast.success("Logged out successfully", { autoClose: 2000 });
-  //   navigate("/login"); // Redirect to login page
-  // };
+  const { isLoggedIn, logout } = useAuth();
 
   return (
     <div>
@@ -53,7 +28,7 @@ const Navbar = () => {
           <Link to={"/about"} className="hover:text-gray-400">
             About
           </Link>
-          <Link to={"/profile/:profileId"} className="hover:text-gray-400">
+          <Link to={"/profile"} className="hover:text-gray-400">
             My Profile
           </Link>
         </div>
