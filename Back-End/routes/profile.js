@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const Profile = require("../models/Profile");
-const { authenticate } = require('../middleware/authMiddleware');
+const { authenticate } = require("../middleware/authMiddleware");
 const router = express.Router();
 const User = require("../models/User");
 const mongoose = require("mongoose");
@@ -37,15 +37,13 @@ router.post("/profile", async (req, res) => {
     // Check if a profile already exists for the user
     const existingProfile = await Profile.findOne({ user: userId });
     if (existingProfile) {
-      return res
-        .status(400)
-        .json({
-          message: "Profile already exists for this user",
-          success: false,
-        });
+      return res.status(400).json({
+        message: "Profile already exists for this user",
+        success: false,
+      });
     }
-    console.log("User ID")
-    console.log(userId)
+    console.log("User ID");
+    console.log(userId);
 
     // Create a new profile
     const newProfile = new Profile({
@@ -67,13 +65,11 @@ router.post("/profile", async (req, res) => {
     await newProfile.save();
     console.log("New Profile ID");
     console.log(newProfile);
-    res
-      .status(201)
-      .json({
-        message: "Profile created successfully",
-        profile: newProfile,
-        success: true,
-      });
+    res.status(201).json({
+      message: "Profile created successfully",
+      profile: newProfile,
+      success: true,
+    });
   } catch (error) {
     console.error("Error creating profile:", error);
     res.status(500).json({ error: "Server error", success: false });
@@ -86,7 +82,6 @@ router.get("/profile/:id", authenticate, async (req, res) => {
     const { id: profileId } = req.params; // Extract profileId from URL params
     console.log("current profile");
     console.log(profileId);
-    
 
     // Validate if profileId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(profileId)) {
@@ -96,7 +91,9 @@ router.get("/profile/:id", authenticate, async (req, res) => {
     }
 
     // Fetch the profile using profileId
-    const profile = await Profile.findById(profileId);
+    const profile = await Profile.findById(profileId)
+      .populate("skills", "name description") // Populate skills
+      .populate("projects", "title description");// populatae projects
 
     if (!profile) {
       return res
@@ -132,7 +129,7 @@ router.get("/profiles", async (req, res) => {
   }
 });
 
-router.delete('/:profileId', async (req, res) => {
+router.delete("/:profileId", async (req, res) => {
   try {
     const { profileId } = req.params; // Extract profileId from the request parameters
 
@@ -141,12 +138,15 @@ router.delete('/:profileId', async (req, res) => {
 
     // Check if profile exists before trying to delete
     if (!deletedProfile) {
-      return res.status(404).json({ message: "Profile not found", success: false });
+      return res
+        .status(404)
+        .json({ message: "Profile not found", success: false });
     }
 
     // Send response on successful deletion
-    res.status(200).json({ message: "Profile deleted successfully", success: true });
-
+    res
+      .status(200)
+      .json({ message: "Profile deleted successfully", success: true });
   } catch (error) {
     // Handle any server errors
     console.error("Error while deleting profile:", error);
@@ -156,7 +156,7 @@ router.delete('/:profileId', async (req, res) => {
 
 // Update a profile
 
-router.patch('/update', authenticate, async (req, res) => {
+router.patch("/update", authenticate, async (req, res) => {
   try {
     const {
       firstName,
@@ -175,10 +175,10 @@ router.patch('/update', authenticate, async (req, res) => {
     const currentUser = req.user; // Current user is attached to the request by the authenticate middleware
     // console.log(currentUser)
 
-    const userProfile = currentUser
+    const userProfile = currentUser;
     // const userProfile = await Profile.findOne({ where: { _id: currentUser.id } });
     if (!currentUser) {
-      return res.status(404).json({ message: 'Profile not found' });
+      return res.status(404).json({ message: "Profile not found" });
     }
 
     // If profile image is provided, update it
@@ -204,12 +204,18 @@ router.patch('/update', authenticate, async (req, res) => {
     await userProfile.save();
 
     return res.status(200).json({
-      message: 'Profile updated successfully',
+      message: "Profile updated successfully",
       profile: userProfile,
-      success: true
+      success: true,
     });
   } catch (error) {
-    return res.status(500).json({ message: 'Error updating profile', error: error.message ,success: false});
+    return res
+      .status(500)
+      .json({
+        message: "Error updating profile",
+        error: error.message,
+        success: false,
+      });
   }
 });
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Developers = () => {
@@ -6,6 +7,7 @@ const Developers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [profilesPerPage] = useState(12);
   const [searchQuery, setSearchQuery] = useState(""); // 🔍 Search state
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch profiles from API
@@ -30,6 +32,7 @@ const Developers = () => {
     fetchProfiles();
   }, []);
   // console.log(profiles);
+  // profiles.forEach(profile => console.log(profile._id));
 
   // 🔍 Filter profiles based on search query
   const filteredProfiles = profiles.filter((profile) =>
@@ -76,7 +79,7 @@ const Developers = () => {
         {currentProfiles.length > 0 ? (
           currentProfiles.map((profile) => (
             <div
-              key={profile.id}
+              key={profile._id}
               className="p-6 bg-gray-50 shadow-lg rounded-lg cursor-pointer hover:shadow-xl transition flex items-center justify-center w-80 h-80"
             >
               <div className="flex flex-col items-center justify-center">
@@ -93,6 +96,7 @@ const Developers = () => {
                   {profile?.shortIntro}
                 </p>
                 <p className="text-gray-500">{profile?.location}</p>
+                  <button onClick={() => navigate(`/profile/${profile._id}`)} className="w-40 bg-gray-700 text-white py-3 rounded-sm mt-5">View Profile</button>
               </div>
             </div>
           ))

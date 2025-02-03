@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar";
 import AddSkill from "./components/AddSkill";
 import AddProject from "./components/AddProject";
 import AddProfile from "./components/AddProfile";
+import SingleProduct from "./components/SingleProfile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import CanvasCursor from "./components/CanvasCursor";
@@ -45,6 +46,7 @@ const AppRoutes = () => {
         <Route path="/addskill" element={<AddSkill/>}/>
         <Route path="/addproject" element={<AddProject/>}/>
         <Route path="/addprofile" element={<AddProfile/>}/>
+        <Route path="/profile/:profileId" element={<SingleProduct />}/>
          <Route element={<ProtectedRoutes />}>
           <Route path="/profile" element={<Profile />} />
          </Route> 

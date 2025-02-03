@@ -28,7 +28,7 @@ const Profile = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:5000/profile/${profileId}`, // Update this to your endpoint
+          `http://localhost:5000/profile/profile/${profileId}`, // Update this to your endpoint
           {
             headers: {
               Authorization: `Bearer ${token}`,
