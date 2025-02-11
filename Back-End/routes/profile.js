@@ -188,12 +188,9 @@ router.patch("/update", authenticate, async (req, res) => {
       socialWebsite,
     } = req.body;
 
-    const currentUser = req.user; // Current user is attached to the request by the authenticate middleware
-    // console.log(currentUser)
+    const userProfile = req.profile; // Current profile is attached to the request by the authenticate middleware
 
-    const userProfile = currentUser;
-    // const userProfile = await Profile.findOne({ where: { _id: currentUser.id } });
-    if (!currentUser) {
+    if (!userProfile) {
       return res.status(404).json({ message: "Profile not found" });
     }
 
@@ -225,13 +222,11 @@ router.patch("/update", authenticate, async (req, res) => {
       success: true,
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        message: "Error updating profile",
-        error: error.message,
-        success: false,
-      });
+    return res.status(500).json({
+      message: "Error updating profile",
+      error: error.message,
+      success: false,
+    });
   }
 });
 

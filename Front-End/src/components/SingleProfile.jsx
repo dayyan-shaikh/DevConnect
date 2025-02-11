@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 const SingleProfile = () => {
   const { profileId } = useParams();
-  console.log(profileId);
   const [details, setDetails] = useState(null);
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const SingleProfile = () => {
         }
 
         const res = await response.json();
-        console.log("Fetched profile:", res);
         setDetails(res);
       } catch (error) {
         console.error("Fetch error:", error.message);
@@ -40,8 +38,6 @@ const SingleProfile = () => {
 
     fetchDetails();
   }, [profileId]);
-
-  // console.log(details?.profile?.projects);
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -157,34 +153,60 @@ const SingleProfile = () => {
 
           {/* Projects Section */}
           <h3 className="text-lg font-bold mb-2">Projects</h3>
-          <div className=" flex flex-cols gap-10 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             {details?.profile?.projects &&
             details?.profile?.projects.length > 0 ? (
               details.profile.projects.map((project) => (
-                <div key={project._id} className="project-card">
-                  <img src={project.featured_image} alt={project.title} />
+                <div key={project._id} className="project-card bg-gray-100 p-4 rounded-lg shadow-md">
+                  <div className="absolute top-2 right-2 flex space-x-2">
+                    <button
+                      onClick={() => handleEditClick(project._id)}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDeleteProject(project._id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
+                  {project.featured_image && (
+                    <img src={project.featured_image} alt={project.title} className="mb-4" />
+                  )}
                   <p>
                     <strong>Title :</strong> {project.title}
                   </p>
                   <p>
                     <strong>Description :</strong> {project.description}
                   </p>
-                  <li className="p-2 bg-gray-200 rounded-md mb-2 list-none">
-                    <a
-                      href={project.demo_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Link:
-                    </a>
-                  </li>
-                  <a
-                    href={project.source_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Source Code
-                  </a>
+                  {project.demo_link && (
+                    <p className="p-2 bg-gray-200 rounded-md mb-2">
+                      <strong>Demo Link: </strong>
+                      <a
+                        href={project.demo_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline break-words"
+                      >
+                        {project.demo_link}
+                      </a>
+                    </p>
+                  )}
+                  {project.source_link && (
+                    <p className="p-2 bg-gray-200 rounded-md mb-2">
+                      <strong>Source Code: </strong>
+                      <a
+                        href={project.source_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline break-words"
+                      >
+                        {project.source_link}
+                      </a>
+                    </p>
+                  )}
                 </div>
               ))
             ) : (

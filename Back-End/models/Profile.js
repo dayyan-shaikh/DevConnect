@@ -18,9 +18,6 @@ const profileSchema = new mongoose.Schema({
     profileImage: {
       type: String,
     },
-    username: {
-      type: String,
-    },
     about: {
       type: String,
     },
@@ -37,9 +34,6 @@ const profileSchema = new mongoose.Schema({
       type: String,
     },
     socialLinkedin: {
-      type: String,
-    },
-    socialYoutube: {
       type: String,
     },
     socialWebsite: {

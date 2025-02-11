@@ -4,32 +4,35 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const AddProfile = () => {
+  const [profileId, setProfileId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const profileId = queryParams.get('user'); // Get profileId from the query parameter
-
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
     profileImage: null,
     shortIntro: "",
+    about:"",
     location: "",
-    // bio: "",
     github: "",
     twitter: "",
-    youtube: "",
     linkedin: "",
     website: "",
   });
 
   const [loading, setLoading] = useState(false);
 
-  // Fetch profile data on component load
+  useEffect(() => {
+    const storedProfileId = localStorage.getItem("profileId");
+    if (storedProfileId) {
+      setProfileId(storedProfileId);
+    }
+  }, []);
+
   useEffect(() => {
     const fetchProfile = async () => {
       if (!profileId) {
-        toast.error("Profile ID is missing.");
+        console.error("Profile ID is not set!");
         return;
       }
 
@@ -49,18 +52,18 @@ const AddProfile = () => {
             },
           }
         );
-        
+
         if (response.data.success) {
           const profile = response.data.profile;
-          setFormData({
+          setFormData({ 
             fname: profile.firstName || "",
             lname: profile.lastName || "",
             profileImage: profile.profileImage || null,
             location: profile.location || "",
             shortIntro: profile.shortIntro || "",
+            about: profile.about || "",
             github: profile.socialGithub || "",
             twitter: profile.socialTwitter || "",
-            youtube: profile.socialYoutube || "",
             linkedin: profile.socialLinkedin || "",
             website: profile.socialWebsite || "",
           });
@@ -75,8 +78,10 @@ const AddProfile = () => {
       }
     };
 
-    fetchProfile();
-  }, [profileId]); // Make sure to refetch if profileId changes
+    if (profileId) {
+      fetchProfile();
+    }
+  }, [profileId]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -91,7 +96,7 @@ const AddProfile = () => {
     const file = e.target.files[0];
     setFormData({ ...formData, profileImage: file });
   };
-  const token = localStorage.getItem('token') || 'your-jwt-token-here';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -101,12 +106,14 @@ const AddProfile = () => {
       lastName: formData.lname,
       location: formData.location,
       shortIntro: formData.shortIntro,
+      about: formData.about,
       socialGithub: formData.github,
       socialTwitter: formData.twitter,
-      socialYoutube: formData.youtube,
       socialLinkedin: formData.linkedin,
       socialWebsite: formData.website,
     };
+
+    const token = localStorage.getItem('token');
 
     try {
       const response = await axios.patch(
@@ -122,7 +129,7 @@ const AddProfile = () => {
 
       if (response.data.success) {
         toast.success("Profile updated successfully!");
-        navigate("/profile");
+        navigate(`/profile/${profileId}`);
       } else {
         toast.error("Failed to update profile.");
       }
@@ -139,8 +146,7 @@ const AddProfile = () => {
       <div className="content-box bg-white p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
         <div className="formWrapper">
           {/* Back Button */}
-          <Link
-            to="/profile"
+          <Link to={`/profile/${profileId}`}
             className="backButton text-blue-500 hover:underline flex items-center mb-4"
           >
             <i className="fas fa-angle-left mr-2"></i> Back
@@ -189,7 +195,6 @@ const AddProfile = () => {
               />
             </div>
 
-            {/* Other fields remain the same */}
             {/* Profile Picture */}
             <div className="form__field">
               <label
@@ -230,6 +235,7 @@ const AddProfile = () => {
                 onChange={handleInputChange}
               />
             </div>
+
             {/* About */}
             <div className="form__field">
               <label
@@ -247,7 +253,7 @@ const AddProfile = () => {
               ></textarea>
             </div>
 
-            {/* ShortIntro */}
+            {/* Short Intro */}
             <div className="form__field">
               <label
                 htmlFor="shortIntro"
@@ -265,7 +271,7 @@ const AddProfile = () => {
             </div>
 
             {/* Social Links */}
-            {["GitHub", "Twitter","LinkedIn", "Website"].map(
+            {["GitHub", "Twitter", "LinkedIn", "Website"].map(
               (field) => (
                 <div className="form__field" key={field.toLowerCase()}>
                   <label
@@ -286,7 +292,6 @@ const AddProfile = () => {
               )
             )}
 
-            {/* Other form fields */}
             {/* Submit Button */}
             <div>
               <input

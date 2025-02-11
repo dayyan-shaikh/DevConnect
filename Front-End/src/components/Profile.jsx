@@ -1,53 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ProfileSkills from "./ProfileSkills";
+import ProfileProjects from "./ProfileProjects";
 
 const Profile = () => {
-    const { profileId } = useParams();
-    // console.log(profileId, "id");
-  
-    const [details, setDetails] = useState(null);
-  
-    useEffect(() => {
-      if (!profileId) {
-        console.error("No profileId found in the URL!");
-        return;  // Don't try fetching if the profileId is missing
-      }
-  
-      const fetchDetails = async () => {
-        try {
-          const token = localStorage.getItem("token"); // Get the stored token
-  
-          if (!token) {
-            throw new Error("No authentication token found. Please log in.");
-          }
-  
-          const response = await fetch(
-            `http://localhost:5000/profile/profile/${profileId}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // Send token in header
-              },
-            }
-          );
-  
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-  
-          const res = await response.json();
-          console.log("Fetched profile:", res);
-          setDetails(res);
-        } catch (error) {
-          console.error("Fetch error:", error.message);
+  const { profileId } = useParams();
+  const [details, setDetails] = useState(null);
+
+  useEffect(() => {
+    if (!profileId) {
+      console.error("No profileId found in the URL!");
+      return; // Don't try fetching if the profileId is missing
+    }
+
+    const fetchDetails = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Get the stored token
+
+        if (!token) {
+          throw new Error("No authentication token found. Please log in.");
         }
-      };
-  
-      fetchDetails();
-    }, [profileId]);
-  
+
+        const response = await fetch(
+          `http://localhost:5000/profile/profile/${profileId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Send token in header
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const res = await response.json();
+        console.log("Fetched profile:", res);
+        setDetails(res);
+      } catch (error) {
+        console.error("Fetch error:", error.message);
+      }
+    };
+
+    fetchDetails();
+  }, [profileId]);
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       {/* Profile Container */}
@@ -135,7 +134,7 @@ const Profile = () => {
         </div>
 
         {/* Right Section */}
-        <div className="col-span-2 bg-white shadow-md rounded-lg p-6 w-[750px]">
+        <div className="col-span-2 bg-white shadow-md rounded-lg p-6">
           {/* About Me Section */}
           <div className="mb-6">
             <h3 className="text-lg font-bold mb-2">About Me</h3>
@@ -148,21 +147,11 @@ const Profile = () => {
           <div className="mb-6">
             <ProfileSkills /> {/* This renders your Skills component */}
           </div>
-
-          {/* Projects Section */}
-          <div className="mb-6 flex items-center justify-between">
-            <h3 className="text-lg font-bold mb-2">Projects</h3>
-            <Link to="/addproject">
-              <button className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-200">
-                + Add Project
-              </button>
-            </Link>
-          </div>
-          <p className="text-gray-500">
-            You have not uploaded any projects yet
-          </p>
         </div>
       </div>
+
+      {/* Projects Section */}
+      <ProfileProjects /> {/* This renders your Projects component */}
     </div>
   );
 };
