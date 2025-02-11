@@ -1,10 +1,17 @@
-import { Link} from "react-router-dom";
-import { useAuth } from '../context/AuthContext'; 
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const { isLoggedIn, logout } = useAuth();
-
+  const [profileId, setProfileId] = useState(null);
+  useEffect(() => {
+    const storedProfileId = localStorage.getItem("profileId");
+    if (storedProfileId) {
+      setProfileId(storedProfileId);
+    }
+  }, [isLoggedIn]);
   return (
     <div>
       <nav className="bg-gray-700 text-white p-6 flex justify-around items-center">
@@ -17,6 +24,7 @@ const Navbar = () => {
             <h1 className="text-3xl font-bold">DevConnect</h1>
           </div>
         </Link>
+
         {/* Navigation Links */}
         <div className="hidden md:flex text-lg space-x-8">
           <Link to={"/developers"} className="hover:text-gray-400">
@@ -28,9 +36,12 @@ const Navbar = () => {
           <Link to={"/about"} className="hover:text-gray-400">
             About
           </Link>
-          <Link to={"/profile"} className="hover:text-gray-400">
-            My Profile
-          </Link>
+          {/* Show My Profile only if user is logged in */}
+          {isLoggedIn && (
+            <Link to={`/profile/${profileId}`} className="hover:text-gray-400">
+              My Profile
+            </Link>
+          )}
         </div>
 
         {/* Conditional Rendering for Login/Logout */}

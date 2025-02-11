@@ -77,11 +77,11 @@ router.post("/profile", async (req, res) => {
 });
 
 // Get a user's profile by profileId
-router.get("/profile/:id", authenticate, async (req, res) => {
+router.get("/profile/:id",async (req, res) => {
   try {
     const { id: profileId } = req.params; // Extract profileId from URL params
     console.log("current profile");
-    console.log(profileId);
+    // console.log(profileId);
 
     // Validate if profileId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(profileId)) {
@@ -109,6 +109,22 @@ router.get("/profile/:id", authenticate, async (req, res) => {
   }
 });
 
+router.get("/me", authenticate, async (req, res) => {
+  try {
+    // Find the profile based on the logged-in user's ID
+    const profile = await Profile.findOne({ user: req.user.id });
+    // console.log(profile);
+    
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.json(profile); // Send profile data (including _id)
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 // Get all profiles
 router.get("/profiles", async (req, res) => {
   try {

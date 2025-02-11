@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddSkill = () => {
@@ -12,12 +12,23 @@ const AddSkill = () => {
   const location = useLocation();
   const [editing, setEditing] = useState(false); // Track if we're editing a skill
 
-  // Extract skillId from query params
-  const queryParams = new URLSearchParams(location.search);
-  const skillId = queryParams.get('edit'); // `edit` parameter contains the skillId
-  
+  const [profileId, setProfileId] = useState(null);
+  const [skillId, setSkillId] = useState(null); // Track the skillId
+
   useEffect(() => {
-    if (skillId) {
+    const storedProfileId = localStorage.getItem("profileId");
+    if (storedProfileId) {
+      setProfileId(storedProfileId);
+    }
+  }, []);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const skillIdFromParams = queryParams.get('edit'); // `edit` parameter contains the skillId
+    console.log("Skill ID from query params:", skillIdFromParams);
+
+    if (skillIdFromParams) {
+      setSkillId(skillIdFromParams); // Set the skillId state
       // Fetch skill data if editing      
       const fetchSkill = async () => {
         try {
@@ -28,14 +39,14 @@ const AddSkill = () => {
           }
           
           const response = await axios.get(
-            `http://localhost:5000/skill/skill/${skillId}`,  // Use the skillId in the URL
+            `http://localhost:5000/skill/skill/${skillIdFromParams}`,  // Use the skillId in the URL
             {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
-          // console.log(response.data);         
+          // console.log(response.data);      
           if (response.data.success) {
             setSkill(response.data.skill.name);
             setDescription(response.data.skill.description);
@@ -51,7 +62,7 @@ const AddSkill = () => {
 
       fetchSkill();
     }
-  }, [skillId]);
+  }, [location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,7 +86,7 @@ const AddSkill = () => {
 
         if (response.data.success) {
           toast.success('Skill updated successfully!');
-          setTimeout(() => navigate('/profile'), 1000);
+          setTimeout(() => navigate(`/profile/${profileId}`), 1000);
         } else {
           toast.error('Failed to update skill');
         }
@@ -92,11 +103,13 @@ const AddSkill = () => {
           }
         );
 
+        console.log("Create skill response:", response.data);
+
         if (response.data.success) {
           toast.success('Skill added successfully!');
-          setTimeout(() => navigate('/profile'), 2000);
+          setTimeout(() => navigate(`/profile/${profileId}`), 2000);
         } else {
-          toast.error('Failed to add skill',{ autoClose: 2000 });
+          toast.error('Failed to add skill', { autoClose: 2000 });
         }
       }
     } catch (error) {
@@ -112,7 +125,7 @@ const AddSkill = () => {
       <main className="formPage my-12 px-4">
         <div className="content-box bg-white p-8 shadow-lg rounded-lg max-w-lg mx-auto">
           <div className="formWrapper">
-            <Link to="/profile" className="backButton text-blue-500 hover:underline flex items-center mb-4">
+            <Link to={`/profile/${profileId}`} className="backButton text-blue-500 hover:underline flex items-center mb-4">
               <i className="im im-angle-left mr-2"></i> Back
             </Link>
             <form className="form" onSubmit={handleSubmit} id="skillForm">

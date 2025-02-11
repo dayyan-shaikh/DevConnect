@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import Projects from "./components/Projects";
 import Developers from "./components/Developers";
 import About from "./components/About";
@@ -11,14 +11,12 @@ import Navbar from "./components/Navbar";
 import AddSkill from "./components/AddSkill";
 import AddProject from "./components/AddProject";
 import AddProfile from "./components/AddProfile";
-import SingleProduct from "./components/SingleProfile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import CanvasCursor from "./components/CanvasCursor";
-import './App.css'
-import ProtectedRoutes from "./components/ProtectedRoutes";
+import "./App.css";
 import LoadingSpinner from "./components/LoadingSpinner";
-
+import SingleProfile from "./components/SingleProfile";
 
 const AppRoutes = () => {
   const [loading, setLoading] = useState(false); // Track loading state
@@ -43,13 +41,11 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/addskill" element={<AddSkill/>}/>
-        <Route path="/addproject" element={<AddProject/>}/>
-        <Route path="/addprofile" element={<AddProfile/>}/>
-        <Route path="/profile/:profileId" element={<SingleProduct />}/>
-         <Route element={<ProtectedRoutes />}>
-          <Route path="/profile" element={<Profile />} />
-         </Route> 
+        <Route path="/profile/addskill" element={<AddSkill />} />
+        <Route path="/profile/addproject" element={<AddProject />} />
+        <Route path="/profile/addprofile" element={<AddProfile />} />
+        <Route path="/single-profile/:profileId" element={<SingleProfile />} />
+        <Route path="/profile/:profileId" element={<Profile />} />
       </Routes>
     </>
   );
@@ -58,7 +54,7 @@ const AppRoutes = () => {
 const App = () => {
   return (
     <BrowserRouter>
-    {/* <CanvasCursor /> */}
+      {/* <CanvasCursor /> */}
       <Navbar />
       <AppRoutes /> {/* Render AppRoutes inside BrowserRouter */}
     </BrowserRouter>

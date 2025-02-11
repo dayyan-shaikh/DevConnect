@@ -1,66 +1,53 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProfileSkills from "./ProfileSkills";
 
 const Profile = () => {
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const profileId = queryParams.get("user");
+    const { profileId } = useParams();
+    // console.log(profileId, "id");
   
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found!");
-        return;
-      }
-
+    const [details, setDetails] = useState(null);
+  
+    useEffect(() => {
       if (!profileId) {
-        setError("Profile ID is missing.");
-        return;
+        console.error("No profileId found in the URL!");
+        return;  // Don't try fetching if the profileId is missing
       }
-
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `http://localhost:5000/profile/profile/${profileId}`, // Update this to your endpoint
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+  
+      const fetchDetails = async () => {
+        try {
+          const token = localStorage.getItem("token"); // Get the stored token
+  
+          if (!token) {
+            throw new Error("No authentication token found. Please log in.");
           }
-        );
-
-        if (response.data.success) {
-          setProfile(response.data.profile);
-        } else {
-          console.error("Failed to fetch profile");
-          setError("Failed to fetch profile.");
+  
+          const response = await fetch(
+            `http://localhost:5000/profile/profile/${profileId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Send token in header
+              },
+            }
+          );
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+  
+          const res = await response.json();
+          console.log("Fetched profile:", res);
+          setDetails(res);
+        } catch (error) {
+          console.error("Fetch error:", error.message);
         }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-        setError("Failed to load profile.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [profileId]);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
+      };
+  
+      fetchDetails();
+    }, [profileId]);
+  
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       {/* Profile Container */}
@@ -70,11 +57,14 @@ const Profile = () => {
           {/* Profile Image */}
           <div className="relative">
             <img
-              src={profile?.profileImage || "https://via.placeholder.com/150"}
+              src={
+                details?.profile?.profileImage ||
+                "https://via.placeholder.com/150"
+              }
               alt="Profile"
               className="w-32 h-32 mx-auto rounded-full border-4 border-blue-200"
             />
-            <Link to="/addprofile">
+            <Link to="/profile/addprofile">
               <button className="absolute top-[-10px] right-16 transform -translate-x-1/4 bg-blue-100 text-blue-600 text-sm px-2 py-1 rounded-full hover:bg-blue-200">
                 ✏️ Edit
               </button>
@@ -83,8 +73,8 @@ const Profile = () => {
 
           {/* Name */}
           <h2 className="mt-4 text-lg font-bold">
-            {profile?.firstName || "First Name"}{" "}
-            {profile?.lastName || "Last Name"}
+            {details?.profile?.firstName || "First Name"}{" "}
+            {details?.profile?.lastName || "Last Name"}
           </h2>
           {/* Location and Short Intro */}
           <div className="mb-6">
@@ -93,7 +83,7 @@ const Profile = () => {
               {/* Short Intro */}
               <div className="flex items-center mb-4">
                 <p className="text-gray-500 font-bold">
-                  {profile?.shortIntro || "No short intro provided."}
+                  {details?.profile?.shortIntro || "No short intro provided."}
                 </p>
               </div>
 
@@ -101,7 +91,7 @@ const Profile = () => {
               <div className="flex items-center">
                 <h6 className="text-lg mr-2">Location:</h6>
                 <p className="text-gray-500">
-                  {profile?.location || "Location not specified."}
+                  {details?.profile?.location || "Location not specified."}
                 </p>
               </div>
             </div>
@@ -109,23 +99,35 @@ const Profile = () => {
 
           {/* Social Links */}
           <div className="flex justify-center mt-4 space-x-4 text-gray-500">
-            {profile?.socialGithub && (
-              <a href={profile.socialGithub} className="hover:text-blue-500">
+            {details?.profile?.socialGithub && (
+              <a
+                href={details?.profile.socialGithub}
+                className="hover:text-blue-500"
+              >
                 <i className="fab fa-github fa-lg"></i>
               </a>
             )}
-            {profile?.socialLinkedin && (
-              <a href={profile.socialLinkedin} className="hover:text-blue-500">
+            {details?.profile?.socialLinkedin && (
+              <a
+                href={details?.profile.socialLinkedin}
+                className="hover:text-blue-500"
+              >
                 <i className="fab fa-linkedin fa-lg"></i>
               </a>
             )}
-            {profile?.socialTwitter && (
-              <a href={profile.socialTwitter} className="hover:text-blue-500">
+            {details?.profile?.socialTwitter && (
+              <a
+                href={details?.profile.socialTwitter}
+                className="hover:text-blue-500"
+              >
                 <i className="fab fa-twitter fa-lg"></i>
               </a>
             )}
-            {profile?.socialWebsite && (
-              <a href={profile.socialWebsite} className="hover:text-blue-500">
+            {details?.profile?.socialWebsite && (
+              <a
+                href={details?.profile.socialWebsite}
+                className="hover:text-blue-500"
+              >
                 <i className="fas fa-globe fa-lg"></i>
               </a>
             )}
@@ -138,7 +140,7 @@ const Profile = () => {
           <div className="mb-6">
             <h3 className="text-lg font-bold mb-2">About Me</h3>
             <p className="text-gray-500">
-              {profile?.about || "No description provided."}
+              {details?.profile?.about || "No description provided."}
             </p>
           </div>
 

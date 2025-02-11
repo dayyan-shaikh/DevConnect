@@ -80,7 +80,7 @@ const ProfileSkills = () => {
   // Handle editing skill (navigating to AddSkill page)
   const handleEditSkill = (skillId) => {
     // Navigate to AddSkill page with the skill ID in the query parameter
-    navigate(`/addskill?edit=${skillId}`);
+    navigate(`/profile/addskill?edit=${skillId}`);
   };
 
   return (
@@ -88,7 +88,7 @@ const ProfileSkills = () => {
       <div className="mb-6 flex items-center justify-between">
         <h3 className="text-lg font-bold mb-2">Skills</h3>
         <div className="flex flex-wrap gap-2">
-          <Link to="/addskill">
+          <Link to="/profile/addskill">
             <button className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-200">
               + Add Skill
             </button>

@@ -3,27 +3,26 @@ import { useParams } from "react-router-dom";
 
 const SingleProfile = () => {
   const { profileId } = useParams();
-  // console.log(profileId.profileId);
-
+  console.log(profileId);
   const [details, setDetails] = useState(null);
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get the stored token
+        const token = localStorage.getItem("token"); // Get token if available
 
-        if (!token) {
-          throw new Error("No authentication token found. Please log in.");
+        const headers = { "Content-Type": "application/json" };
+
+        // Only add Authorization header if a token exists
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
         }
 
         const response = await fetch(
           `http://localhost:5000/profile/profile/${profileId}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Send token in header
-            },
+            headers,
           }
         );
 
@@ -41,7 +40,8 @@ const SingleProfile = () => {
 
     fetchDetails();
   }, [profileId]);
-  console.log(details?.profile?.projects);
+
+  // console.log(details?.profile?.projects);
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -110,14 +110,14 @@ const SingleProfile = () => {
                 <i className="fab fa-twitter fa-lg"></i>
               </a>
             )}
-           {details?.profile?.socialWebsite && (
+            {details?.profile?.socialWebsite && (
               <a
                 href={details?.profile?.socialWebsite}
                 className="hover:text-blue-500"
               >
                 <i className="fas fa-globe fa-lg"></i>
               </a>
-            )} 
+            )}
           </div>
         </div>
 
@@ -158,21 +158,25 @@ const SingleProfile = () => {
           {/* Projects Section */}
           <h3 className="text-lg font-bold mb-2">Projects</h3>
           <div className=" flex flex-cols gap-10 mb-6">
-            
-            {details?.profile?.projects && details?.profile?.projects.length > 0 ? (
+            {details?.profile?.projects &&
+            details?.profile?.projects.length > 0 ? (
               details.profile.projects.map((project) => (
                 <div key={project._id} className="project-card">
                   <img src={project.featured_image} alt={project.title} />
-                  <p><strong>Title :</strong> {project.title}</p>
-                  <p><strong>Description :</strong> {project.description}</p>
+                  <p>
+                    <strong>Title :</strong> {project.title}
+                  </p>
+                  <p>
+                    <strong>Description :</strong> {project.description}
+                  </p>
                   <li className="p-2 bg-gray-200 rounded-md mb-2 list-none">
-                  <a
-                    href={project.demo_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Link: 
-                  </a>
+                    <a
+                      href={project.demo_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Link:
+                    </a>
                   </li>
                   <a
                     href={project.source_link}

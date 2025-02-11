@@ -96,7 +96,7 @@ const Developers = () => {
                   {profile?.shortIntro}
                 </p>
                 <p className="text-gray-500">{profile?.location}</p>
-                  <button onClick={() => navigate(`/profile/${profile._id}`)} className="w-40 bg-gray-700 text-white py-3 rounded-sm mt-5">View Profile</button>
+                  <button onClick={() => navigate(`/single-profile/${profile._id}`)} className="w-40 bg-gray-700 text-white py-3 rounded-sm mt-5">View Profile</button>
               </div>
             </div>
           ))

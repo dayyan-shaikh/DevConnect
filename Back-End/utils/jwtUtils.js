@@ -22,29 +22,20 @@ const verifyToken = async (token) => {
 // Function to extract the user from the token and return their profile
 const getCurrentUser = async (token) => {
   try {
-    // Decode the token and extract the user ID
     const decoded = await verifyToken(token);
     const userId = decoded.id;
-    console.log(userId);
-    
 
-    // Fetch the user from the database
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    // Fetch the profile associated with the user
-    const userProfile = await Profile.findOne({ user: userId });
-    if (!userProfile) {
+    const profile = await Profile.findOne({ user: userId });
+    if (!profile) {
       throw new Error('User profile not found');
     }
 
-    return userProfile;
+    return profile;
+    
   } catch (error) {
     console.error('Error fetching user or profile:', error.message);
-    throw error; // Rethrow the error for the calling function to handle
+    throw error;
   }
 };
-// console.log(getCurrentUser)
+
 module.exports = { getCurrentUser };

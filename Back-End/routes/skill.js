@@ -8,49 +8,33 @@ const mongoose = require("mongoose");
 router.post("/createSkill", authenticate, async (req, res) => {
   try {
     const { name, description } = req.body;
+    const profile = req.profile; // ✅ Uses `req.profile` instead of `req.user`
 
-    // Check if the profile exists
-    const profile = req.user;
-    if (!profile) {
-      return res
-        .status(404)
-        .json({ message: "Profile not found", success: false });
-    }
+    // console.log("Request body:", req.body);
+    // console.log("Profile:", profile);
 
-    // Check if the skill already exists for the user
     const existingSkill = await Skill.findOne({ name: name.toLowerCase() });
     if (existingSkill) {
-      return res.status(400).json({
-        message: "Skill already exists in your profile",
-        success: false,
-      });
+      return res.status(400).json({ message: "Skill already exists" });
     }
 
-    // Create the new skill
     const newSkill = new Skill({
       name: name.toLowerCase(),
       description,
-      // user: profile.id,
-      profile: profile._id, // Associate with the profile
+      profile: profile._id,
     });
 
-    // Save the skill to the database
     const savedSkill = await newSkill.save();
-
-    // Add the skill to the profile's skills array
     profile.skills.push(savedSkill._id);
     await profile.save();
 
-    res.status(201).json({
-      message: "Skill created and linked to profile successfully",
-      success: true,
-      skill: savedSkill,
-    });
+    res.status(201).json({ message: "Skill added", skill: savedSkill, success: true });
   } catch (error) {
     console.error("Error creating skill:", error);
     res.status(500).json({ message: "Server error", success: false });
   }
 });
+
 
 // Update Skill
 router.patch("/skills/:id", async (req, res) => {
@@ -94,15 +78,17 @@ router.patch("/skills/:id", async (req, res) => {
 // Get Skills
 router.get("/getSkills", authenticate, async (req, res) => {
   try {
-    const profile = req.user; // Current user is attached to the request by the authenticate middleware
+    const profile = req.profile; // Current user profile is attached to the request by the authenticate middleware
     if (!profile) {
-      return res
-        .status(404)
-        .json({ message: "Profile not found", success: false });
+      return res.status(404).json({ message: "Profile not found", success: false });
     }
 
+    // console.log("Profile ID:", profile._id);
+
     // Fetch all skills associated with the user's profile
-    const skills = await Skill.find({ _id: { $in: profile.skills } });
+    const skills = await Skill.find({ profile: profile._id });
+
+    // console.log("Fetched skills:", skills);
 
     return res.status(200).json({
       message: "Skills fetched successfully",
